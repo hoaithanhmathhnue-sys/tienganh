@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 168 33% 98%;
+    --foreground: 172 25% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 172 25% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 172 25% 10%;
+
+    /* #00856F — chữ trắng trên nền primary đạt WCAG AA (4.58:1) */
+    --primary: 170 100% 26%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 172 30% 94%;
+    --secondary-foreground: 172 50% 18%;
+
+    --muted: 172 18% 94%;
+    --muted-foreground: 172 8% 36%;
+
+    --accent: 40 96% 94%;
+    --accent-foreground: 28 80% 25%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 172 16% 86%;
+    --input: 172 16% 82%;
+    --ring: 170 100% 30%;
+
+    --radius: 0.75rem;
+
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 350ms;
+
+    --chart-1: 170 100% 26%;
+    --chart-2: 172 60% 45%;
+    --chart-3: 12 76% 55%;
+    --chart-4: 197 37% 24%;
+    --chart-5: 43 74% 56%;
+  }
+
+  .dark {
+    --background: 180 22% 7%;
+    --foreground: 168 18% 92%;
+
+    --card: 180 18% 11%;
+    --card-foreground: 168 18% 92%;
+
+    --popover: 180 18% 11%;
+    --popover-foreground: 168 18% 92%;
+
+    --primary: 168 70% 48%;
+    --primary-foreground: 180 40% 6%;
+
+    --secondary: 175 20% 17%;
+    --secondary-foreground: 168 18% 90%;
+
+    --muted: 176 16% 15%;
+    --muted-foreground: 168 10% 68%;
+
+    --accent: 38 40% 18%;
+    --accent-foreground: 40 90% 80%;
+
+    --destructive: 0 70% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 176 14% 21%;
+    --input: 176 14% 26%;
+    --ring: 168 70% 48%;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.2);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background-color: transparent; }
+  ::-webkit-scrollbar-thumb { background-color: hsl(var(--border)); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background-color: hsl(var(--muted-foreground) / 0.5); }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.55);
+    backdrop-filter: blur(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* ─── In poster A4 ─── */
+#poster-print-root { display: none; }
+
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  body > *:not(#poster-print-root) { display: none !important; }
+  #poster-print-root { display: block !important; }
+  #poster-print-root img { width: 100vw; height: 100vh; object-fit: contain; }
+}
