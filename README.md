@@ -3,16 +3,21 @@
 Ứng dụng web hỗ trợ giáo viên tiếng Anh tiểu học trang trí lớp học:
 
 - 📚 **Thư viện slogan** theo danh mục, có phiên âm IPA và nghĩa tiếng Việt, tìm kiếm theo cả 3 trường.
-- 🔊 **Nghe phát âm** bằng giọng trình duyệt hoặc **giọng Gemini AI** (tuỳ chọn, tự chuyển về giọng trình duyệt khi lỗi).
+- 🗣️ **Ngân hàng câu lệnh lớp học** (Classroom English): 124 câu theo 8 tình huống (chào hỏi, hướng dẫn, khen ngợi, quản lý lớp, trò chơi, kết thúc, học sinh ↔ giáo viên, học sinh ↔ học sinh).
+- 🔊 **Nghe phát âm** bằng giọng trình duyệt hoặc **giọng Gemini AI** (tuỳ chọn, tự chuyển về giọng trình duyệt khi lỗi), **tốc độ đọc 0.5x / 0.75x / 1x**.
+- 🎤 **Luyện nói & chấm điểm phát âm** từng từ ngay trên trình duyệt (Chrome/Edge, không cần API key).
 - 🖨️ **Poster A4**: 5 mẫu màu, bật/tắt IPA & nghĩa Việt, tải ảnh PNG hoặc in trực tiếp khổ A4 ngang.
 - 🖥️ **Trình chiếu** toàn màn hình lên bảng/tivi: phím ← → Space, tự chạy 8 giây, đổi màu nền.
 - 💛 **Yêu thích** và ✨ **Bộ sưu tập AI**: lưu ngay trên trình duyệt (localStorage).
-- 🤖 **Trợ lý AI tạo slogan theo chủ đề** (Gemini API hoặc Agent Platform API), tự động chuyển model dự phòng khi quá tải.
+- 🤖 **Trợ lý AI Sư phạm** nổi ở góc phải: chat trả lời dạng Markdown theo thời gian thực (streaming), 3 chế độ
+  ⚡ Fast / 🚀 Normal / 🧠 Thinking, phóng to thành thanh bên (màn hình lớn) hoặc toàn màn hình (điện thoại),
+  nút Dừng / Thử lại, nghe và sao chép từng câu trả lời, lịch sử lưu trên trình duyệt.
+- ✨ **Tạo slogan theo chủ đề** (Gemini API hoặc Agent Platform API), tự động chuyển model dự phòng khi quá tải.
 - 📅 Slogan của ngày, 🌗 giao diện sáng/tối, bộ đếm lượt truy cập.
 
 ## Công nghệ
 
-Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 3 · Framer Motion · `@google/genai` · Vitest.
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 3 · Framer Motion · `@google/genai` · react-markdown + remark-gfm · Web Speech API · Vitest.
 
 ## Chạy trên máy
 
@@ -49,6 +54,12 @@ Chuỗi model dự phòng của Gemini API: `gemini-3.8-flash → gemini-3.6-fla
 App chỉ chuyển model khi gặp lỗi quá tải/không khả dụng (500/503/504, model không tồn tại); lỗi key (401), hết quota (429)
 hoặc tham số (400) sẽ dừng ngay và hiển thị hướng dẫn bằng tiếng Việt.
 
+Trợ lý AI dùng chung client và hàm fallback với các tính năng khác. Khi model lỗi giữa chừng, phần trả lời dở bị xoá
+rồi model kế tiếp trả lời lại từ đầu; lịch sử trò chuyện chỉ được lưu sau khi câu trả lời hoàn tất (hoặc khi bấm Dừng).
+
+> 🎤 Luyện nói dùng Web Speech API của trình duyệt (Chrome/Edge trên máy tính và Android). Cần cho phép quyền Micro
+> và trang phải chạy qua HTTPS (Vercel đã có sẵn) hoặc `localhost`.
+
 ## Đưa lên GitHub
 
 ```bash
@@ -76,12 +87,14 @@ Không cần khai báo API key trên Vercel vì AI chạy trực tiếp từ tr�
 ```
 app/                 layout, trang chính, CSS toàn cục
 components/
-  ai/                hộp thoại Cài đặt AI, bảng Trợ lý AI
-  slogan/            thẻ slogan, nút nghe/sao chép/yêu thích, poster, trình chiếu, slogan của ngày
+  ai/                Trợ lý AI nổi (chat), Markdown, hộp thoại Cài đặt AI, bảng tạo slogan
+  slogan/            thẻ slogan, nghe/sao chép/yêu thích, tốc độ đọc, luyện nói, poster, trình chiếu, slogan của ngày
   ui/                modal, lớp nút dùng chung
 lib/
-  ai/                client duy nhất, hàm fallback duy nhất, model, lỗi, cấu hình, tạo slogan, TTS
+  ai/                client duy nhất, hàm fallback duy nhất (thường + streaming), chat, model, lỗi, cấu hình, TTS
   slogans.ts         dữ liệu slogan
+  classroom-english.ts  ngân hàng câu lệnh lớp học
+  speech-recognition.ts, pronunciation.ts  nhận dạng giọng nói & chấm điểm phát âm
   poster.ts          vẽ poster canvas
   visit-counter.ts   bộ đếm lượt truy cập (counterapi.dev)
 tests/               kiểm thử Vitest

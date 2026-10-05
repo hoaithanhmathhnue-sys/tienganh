@@ -41,18 +41,11 @@ export interface GenerateResult {
  */
 export async function generateContentWithFallback(options: GenerateWithFallbackOptions): Promise<GenerateResult> {
   const { provider, contents, selectedModel, buildConfig, onFallback } = options;
-  const apiKey = (options.apiKey ?? '').trim();
-
-  if (!apiKey) {
-    throw new AiError('MISSING_API_KEY', getFriendlyErrorMessage('MISSING_API_KEY', provider));
-  }
-  if (!isValidGoogleAiApiKey(apiKey)) {
-    throw new AiError('INVALID_KEY_FORMAT', getFriendlyErrorMessage('INVALID_KEY_FORMAT', provider));
-  }
+  const apiKey = assertApiKey(options.apiKey, provider);
 
   const factory = options.clientFactory ?? createGoogleAiClient;
   const client = factory(apiKey, provider);
-  const models = options.models?.length ? [...new Set(options.models)] : getOrderedModels(provider, selectedModel);
+  const models = resolveModels(provider, selectedModel, options.models);
 
   let lastType: AiErrorType = 'UNKNOWN';
   let lastError: unknown = null;
@@ -73,4 +66,89 @@ export async function generateContentWithFallback(options: GenerateWithFallbackO
   }
 
   throw new AiError(lastType, getFriendlyErrorMessage(lastType, provider), { cause: lastError });
+}
+
+/* ─────────────── Streaming (chat) ─────────────── */
+
+export interface StreamClientLike {
+  models: {
+    generateContentStream: (params: GenerateContentParameters) => Promise<AsyncGenerator<GenerateContentResponse>>;
+  };
+}
+
+export interface StreamWithFallbackOptions extends Omit<GenerateWithFallbackOptions, 'clientFactory'> {
+  /** Nhận toàn bộ văn bản đã ghép đến thời điểm hiện tại. */
+  onChunk: (text: string, model: string) => void;
+  /** Phần trả lời dở bị huỷ vì model lỗi giữa chừng — UI cần xoá trước khi model kế tiếp trả lời. */
+  onReset?: () => void;
+  /** Người dùng bấm "Dừng". */
+  signal?: AbortSignal;
+  /** Chỉ dùng cho kiểm thử; mặc định là `createGoogleAiClient`. */
+  clientFactory?: (apiKey: string, provider: AiProvider) => StreamClientLike;
+}
+
+export interface StreamResult {
+  text: string;
+  model: string;
+  aborted: boolean;
+}
+
+/**
+ * Phiên bản streaming của hàm fallback chung (cùng thứ tự model, cùng quy tắc chuyển/dừng).
+ * Nếu stream lỗi sau khi đã có chunk, phần dở bị xoá (onReset) rồi mới thử model kế tiếp.
+ */
+export async function generateContentStreamWithFallback(options: StreamWithFallbackOptions): Promise<StreamResult> {
+  const { provider, contents, selectedModel, buildConfig, onFallback, onChunk, onReset, signal } = options;
+  const apiKey = assertApiKey(options.apiKey, provider);
+
+  const factory = options.clientFactory ?? createGoogleAiClient;
+  const client = factory(apiKey, provider);
+  const models = resolveModels(provider, selectedModel, options.models);
+
+  let lastType: AiErrorType = 'UNKNOWN';
+  let lastError: unknown = null;
+
+  for (let i = 0; i < models.length; i++) {
+    const model = models[i];
+    let text = '';
+    try {
+      const config: GenerateContentConfig = { ...(buildConfig?.(model) ?? {}), ...(signal ? { abortSignal: signal } : {}) };
+      const stream = await client.models.generateContentStream({ model, contents, config });
+      for await (const chunk of stream) {
+        if (signal?.aborted) break;
+        const piece = chunk.text ?? '';
+        if (!piece) continue;
+        text += piece;
+        onChunk(text, model);
+      }
+      if (signal?.aborted) return { text, model, aborted: true };
+      if (!text.trim()) throw new AiError('INVALID_RESPONSE', getFriendlyErrorMessage('INVALID_RESPONSE', provider));
+      return { text, model, aborted: false };
+    } catch (error) {
+      if (signal?.aborted) return { text, model, aborted: true };
+      lastError = error;
+      lastType = parseApiError(error);
+      const next = models[i + 1];
+      if (!shouldFallback(lastType, provider) || !next) break;
+      if (text) onReset?.();
+      onFallback?.({ from: model, to: next, reason: lastType });
+    }
+  }
+
+  throw new AiError(lastType, getFriendlyErrorMessage(lastType, provider), { cause: lastError });
+}
+
+/* ─────────────── Dùng chung ─────────────── */
+
+function assertApiKey(rawKey: string, provider: AiProvider): string {
+  const apiKey = (rawKey ?? '').trim();
+  if (!apiKey) throw new AiError('MISSING_API_KEY', getFriendlyErrorMessage('MISSING_API_KEY', provider));
+  if (!isValidGoogleAiApiKey(apiKey)) {
+    throw new AiError('INVALID_KEY_FORMAT', getFriendlyErrorMessage('INVALID_KEY_FORMAT', provider));
+  }
+  return apiKey;
+}
+
+function resolveModels(provider: AiProvider, selectedModel?: string, override?: string[]): string[] {
+  return override?.length ? [...new Set(override)] : getOrderedModels(provider, selectedModel);
 }
