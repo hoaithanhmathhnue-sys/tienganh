@@ -2,8 +2,9 @@
 
 import { memo } from 'react';
 import { motion } from 'framer-motion';
-import { Printer, Sparkles, Trash2 } from 'lucide-react';
+import { Mic, Printer, Sparkles, Trash2 } from 'lucide-react';
 import type { Slogan } from '@/lib/slogans';
+import { useSpeechRecognitionSupported } from '@/lib/speech-recognition';
 import { buttonClass } from '@/components/ui/button-class';
 import { SpeakButton } from './speak-button';
 import { CopyButton } from './copy-button';
@@ -15,9 +16,11 @@ interface SloganCardProps {
   topic?: string;
   onPoster: (slogan: Slogan) => void;
   onRemove?: (slogan: Slogan) => void;
+  onPractice?: (slogan: Slogan) => void;
 }
 
-function SloganCardBase({ slogan, index, topic, onPoster, onRemove }: SloganCardProps) {
+function SloganCardBase({ slogan, index, topic, onPoster, onRemove, onPractice }: SloganCardProps) {
+  const canPractice = useSpeechRecognitionSupported() && onPractice;
   return (
     <motion.article
       initial={{ opacity: 0, y: 16 }}
@@ -43,6 +46,18 @@ function SloganCardBase({ slogan, index, topic, onPoster, onRemove }: SloganCard
       </p>
       <div className="mt-auto flex flex-wrap items-center gap-1 pt-4">
         <SpeakButton text={slogan.en} />
+        {canPractice && (
+          <button
+            type="button"
+            onClick={() => onPractice(slogan)}
+            aria-label={`Luyện nói: ${slogan.en}`}
+            title="Luyện nói & chấm điểm phát âm"
+            className={buttonClass('ghost', 'text-sm')}
+          >
+            <Mic className="h-4 w-4" aria-hidden="true" />
+            <span className="hidden sm:inline">Luyện nói</span>
+          </button>
+        )}
         <CopyButton text={`${slogan.en}\n${slogan.ipa}\n${slogan.vi}`} />
         <button
           type="button"

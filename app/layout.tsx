@@ -1,5 +1,6 @@
 import { Be_Vietnam_Pro, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
+import { AppShell } from '@/components/app-shell'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import type { Metadata, Viewport } from 'next'
@@ -31,14 +32,14 @@ const siteUrl =
 
 const title = 'English Classroom Decoration — Trường TH Bế Văn Đàn'
 const description =
-  'Bộ sưu tập slogan tiếng Anh trang trí lớp học kèm IPA và nghĩa tiếng Việt, xuất poster A4, trình chiếu và trợ lý AI tạo slogan theo chủ đề — dành cho giáo viên tiếng Anh tiểu học.'
+  'Slogan tiếng Anh trang trí lớp học kèm IPA và nghĩa tiếng Việt, câu lệnh lớp học, luyện nói chấm điểm, Trợ lý AI và Trợ lý soạn giáo án song ngữ Anh – Việt (xuất Word) — dành cho giáo viên tiểu học.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title,
   description,
   applicationName: 'English Classroom Decoration',
-  keywords: ['slogan tiếng Anh', 'trang trí lớp học', 'giáo viên tiếng Anh tiểu học', 'IPA', 'poster lớp học'],
+  keywords: ['slogan tiếng Anh', 'trang trí lớp học', 'giáo viên tiếng Anh tiểu học', 'IPA', 'poster lớp học', 'giáo án song ngữ', 'Teacher Talk'],
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
@@ -75,7 +76,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          {children}
+          <AppShell>{children}</AppShell>
           <Toaster richColors closeButton position="top-right" />
         </ThemeProvider>
       </body>
