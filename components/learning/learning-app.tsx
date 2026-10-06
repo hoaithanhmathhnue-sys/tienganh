@@ -79,8 +79,42 @@ function SelfStudyPanel() {
   const progress = useLearningProgress();
   const [subject, setSubject] = useState('all');
   const [query, setQuery] = useState('');
-  const phrases = useMemo(() => SELF_STUDY_PHRASES.filter((phrase) => (subject === 'all' || phrase.subjectId === subject) && [phrase.en, phrase.vi, phrase.context].join(' ').toLowerCase().includes(query.trim().toLowerCase())), [query, subject]);
-  return <div className="space-y-5"><header className="rounded-3xl bg-gradient-to-r from-[#173683] to-[#284ba5] p-5 text-white sm:p-6"><p className="text-xs font-bold uppercase tracking-wide text-indigo-100">My English for school</p><h2 className="mt-1 font-display text-2xl font-extrabold">Tự học mẫu câu theo môn học</h2><p className="mt-1 text-sm text-indigo-100">Chọn môn, nghe mẫu câu và đánh dấu sau khi đã học.</p></header><div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{[{ id: 'all', label: 'Tất cả môn học', icon: '✨' }, ...LEARNING_SUBJECTS].map((item) => <button key={item.id} type="button" onClick={() => setSubject(item.id)} className={cn('rounded-xl border p-3 text-left transition-colors', subject === item.id ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-card hover:bg-muted')}><span className="text-lg">{item.icon}</span><span className="ml-2 text-sm font-semibold">{item.label}</span></button>)}</div><label className="relative block"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm theo tiếng Anh, tiếng Việt hoặc tình huống…" className="min-h-11 w-full rounded-xl border border-input bg-card py-2 pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" /></label><p className="text-sm text-muted-foreground">Hiển thị <strong className="text-foreground">{phrases.length}</strong> mẫu câu.</p><div className="grid gap-3 md:grid-cols-2">{phrases.map((phrase) => <PhraseCard key={phrase.id} phrase={phrase} completed={progress.learnedPhraseIds.includes(phrase.id)} onComplete={() => { learningProgressStore.markPhraseLearned(phrase.id); toast.success('Đã thêm 10 XP', { description: 'Mẫu câu đã được lưu vào tiến trình tự học.' }); }} />)}</div></div>;
+  const categories = [
+    { id: 'all', label: 'Tất cả bài học', eyebrow: 'Tất cả bài học', icon: '✨' },
+    ...LEARNING_SUBJECTS,
+  ];
+  const phrases = useMemo(
+    () => SELF_STUDY_PHRASES.filter((phrase) => (subject === 'all' || phrase.subjectId === subject) && [phrase.en, phrase.vi, phrase.context].join(' ').toLowerCase().includes(query.trim().toLowerCase())),
+    [query, subject],
+  );
+
+  return (
+    <div className="space-y-5">
+      <header className="rounded-3xl bg-gradient-to-r from-[#173683] to-[#284ba5] p-5 text-white sm:p-6">
+        <p className="text-xs font-bold uppercase tracking-wide text-indigo-100">My English for school</p>
+        <h2 className="mt-1 font-display text-2xl font-extrabold">Tự học mẫu câu theo môn học</h2>
+        <p className="mt-1 text-sm text-indigo-100">Chọn chuyên mục, nghe mẫu câu và đánh dấu sau khi đã học.</p>
+      </header>
+      <section aria-labelledby="study-categories-title">
+        <h3 id="study-categories-title" className="font-display text-lg font-bold text-foreground">10 chuyên mục môn học tiểu học</h3>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((item) => {
+            const count = item.id === 'all' ? SELF_STUDY_PHRASES.length : SELF_STUDY_PHRASES.filter((phrase) => phrase.subjectId === item.id).length;
+            return (
+              <button key={item.id} type="button" onClick={() => setSubject(item.id)} aria-pressed={subject === item.id} className={cn('min-h-24 rounded-xl border p-3 text-left transition-colors', subject === item.id ? 'border-[#2444a2] bg-[#2444a2] text-white shadow-sm' : 'border-border bg-card text-foreground hover:bg-muted')}>
+                <p className={cn('text-[10px] font-bold uppercase tracking-wide', subject === item.id ? 'text-indigo-100' : 'text-muted-foreground')}>{item.eyebrow}</p>
+                <p className="mt-1 text-sm font-bold">{item.icon} {item.label}</p>
+                <p className={cn('mt-1 text-xs', subject === item.id ? 'text-indigo-100' : 'text-muted-foreground')}>{count} mẫu câu</p>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+      <label className="relative block"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm theo tiếng Anh, tiếng Việt hoặc tình huống…" className="min-h-11 w-full rounded-xl border border-input bg-card py-2 pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" /></label>
+      <p className="text-sm text-muted-foreground">Hiển thị <strong className="text-foreground">{phrases.length}</strong> mẫu câu.</p>
+      <div className="grid gap-3 md:grid-cols-2">{phrases.map((phrase) => <PhraseCard key={phrase.id} phrase={phrase} completed={progress.learnedPhraseIds.includes(phrase.id)} onComplete={() => { learningProgressStore.markPhraseLearned(phrase.id); toast.success('Đã thêm 10 XP', { description: 'Mẫu câu đã được lưu vào tiến trình tự học.' }); }} />)}</div>
+    </div>
+  );
 }
 
 function PhraseCard({ phrase, completed, onComplete }: { phrase: LearningPhrase; completed: boolean; onComplete: () => void }) {
