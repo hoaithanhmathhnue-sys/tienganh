@@ -87,9 +87,9 @@ export const getFriendlyErrorMessage = (type: AiErrorType, provider: AiProvider)
     case 'MISSING_API_KEY':
       return 'Vui lòng cấu hình API Key trước khi sử dụng tính năng này.';
     case 'INVALID_KEY_FORMAT':
-      return 'API Key không đúng định dạng (phải bắt đầu bằng AIzaSy… hoặc AQ…). Vui lòng kiểm tra lại trong Cài đặt.';
+      return 'API key không đúng định dạng (phải bắt đầu bằng AIzaSy… hoặc AQ…). Vui lòng kiểm tra lại trong cài đặt.';
     case 'INVALID_API_KEY':
-      return 'API Key không hợp lệ hoặc đã hết hạn. Vui lòng kiểm tra lại trong Cài đặt.';
+      return 'API key không hợp lệ hoặc đã hết hạn. Vui lòng kiểm tra lại trong cài đặt.';
     case 'PERMISSION_DENIED':
       return provider === 'agent-platform'
         ? 'Google đã nhận key nhưng dự án/key chưa được cấp quyền gọi Agent Platform API hoặc model này. Hãy kiểm tra: đã bật Agent Platform API, billing, giới hạn API của key và quyền sử dụng model.'
@@ -99,9 +99,9 @@ export const getFriendlyErrorMessage = (type: AiErrorType, provider: AiProvider)
     case 'MODEL_OVERLOADED':
       return 'Các model đang quá tải hoặc tạm thời không khả dụng. Vui lòng thử lại sau ít phút.';
     case 'NOT_FOUND':
-      return 'Model không còn khả dụng. Hãy chọn model khác trong Cài đặt.';
+      return 'Mô hình không còn khả dụng. Hãy chọn mô hình khác trong cài đặt.';
     case 'INVALID_ARGUMENT':
-      return 'Yêu cầu không hợp lệ với model đã chọn. Hãy thử chọn model khác trong Cài đặt.';
+      return 'Yêu cầu không hợp lệ với mô hình đã chọn. Hãy thử chọn mô hình khác trong cài đặt.';
     case 'INVALID_RESPONSE':
       return 'AI trả về dữ liệu không hợp lệ. Vui lòng thử lại.';
     case 'NETWORK_ERROR':

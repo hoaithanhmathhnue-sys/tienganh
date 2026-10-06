@@ -13,11 +13,11 @@ import { appUiStore, useAppUi } from '@/lib/app-ui-store';
 import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Slogan & Câu lệnh', short: 'Slogan', icon: Megaphone },
+  { href: '/', label: 'Slogan & câu lệnh', short: 'Slogan', icon: Megaphone },
   { href: '/giao-an', label: 'Trợ lý giáo án', short: 'Giáo án', icon: FileText },
 ] as const;
 
-/** Khung chung cho mọi trang: thanh điều hướng, Cài đặt AI và Trợ lý AI nổi. */
+/** Khung chung cho mọi trang: thanh điều hướng, cài đặt AI và trợ lý AI nổi. */
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const ui = useAppUi();

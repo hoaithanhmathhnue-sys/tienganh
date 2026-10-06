@@ -176,7 +176,7 @@ function SettingsForm({ initial, onDone }: { initial: AiSettings; onDone: () => 
 
       <div>
         <label htmlFor="ai-model" className="mb-2 block text-sm font-semibold">
-          3. Model
+          3. Mô hình
         </label>
         <select
           id="ai-model"

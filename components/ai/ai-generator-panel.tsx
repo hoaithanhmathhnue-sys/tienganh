@@ -97,7 +97,7 @@ export function AiGeneratorPanel({ onOpenSettings }: AiGeneratorPanelProps) {
       const createdAt = new Date().toISOString();
       const added = collectionStore.add(slogans.map((s) => ({ ...s, topic: cleanTopic, createdAt })));
       setStatus({ kind: 'success', added, model });
-      toast.success(`Đã thêm ${added} slogan mới vào Bộ sưu tập.`);
+      toast.success(`Đã thêm ${added} slogan mới vào bộ sưu tập.`);
     } catch (error) {
       const type = parseApiError(error);
       const message = error instanceof AiError ? error.message : getFriendlyErrorMessage(type, settings.provider);
@@ -142,7 +142,7 @@ export function AiGeneratorPanel({ onOpenSettings }: AiGeneratorPanelProps) {
               Cần một API key Google AI (miễn phí tại Google AI Studio) để dùng trợ lý. Key chỉ lưu trong trình duyệt của bạn.
             </p>
             <button type="button" onClick={onOpenSettings} className={buttonClass('accent', 'text-sm')}>
-              Mở Cài đặt
+              Mở cài đặt
             </button>
           </div>
         )}
@@ -231,9 +231,9 @@ export function AiGeneratorPanel({ onOpenSettings }: AiGeneratorPanelProps) {
           {status.kind === 'success' && (
             <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-200">
               {status.added > 0
-                ? `Đã thêm ${status.added} slogan mới vào Bộ sưu tập bên dưới.`
-                : 'AI chỉ trả về các slogan đã có trong Bộ sưu tập. Hãy thử chủ đề khác.'}{' '}
-              <span className="opacity-75">Model: {status.model}</span>
+                ? `Đã thêm ${status.added} slogan mới vào bộ sưu tập bên dưới.`
+                : 'AI chỉ trả về các slogan đã có trong bộ sưu tập. Hãy thử chủ đề khác.'}{' '}
+              <span className="opacity-75">Mô hình: {status.model}</span>
             </p>
           )}
           {status.kind === 'error' && (
@@ -248,7 +248,7 @@ export function AiGeneratorPanel({ onOpenSettings }: AiGeneratorPanelProps) {
                 </button>
                 {SETTINGS_ERRORS.includes(status.type) && (
                   <button type="button" onClick={onOpenSettings} className={buttonClass('soft', 'text-sm')}>
-                    <Settings2 className="h-4 w-4" aria-hidden="true" /> Mở Cài đặt
+                    <Settings2 className="h-4 w-4" aria-hidden="true" /> Mở cài đặt
                   </button>
                 )}
               </div>

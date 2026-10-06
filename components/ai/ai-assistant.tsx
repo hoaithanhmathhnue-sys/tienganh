@@ -173,7 +173,7 @@ export function AiAssistant({ onOpenSettings, hidden = false }: AiAssistantProps
     const text = raw.trim().slice(0, MAX_INPUT_LENGTH);
     if (!text || busy) return;
     if (!ready) {
-      toast.info('Cần cấu hình API key trước khi trò chuyện với Trợ lý AI.');
+      toast.info('Cần cấu hình API key trước khi trò chuyện với trợ lý AI.');
       onOpenSettings();
       return;
     }
@@ -223,16 +223,16 @@ export function AiAssistant({ onOpenSettings, hidden = false }: AiAssistantProps
 
   const welcome = `Xin chào Thầy/Cô! 👋
 
-Em là **Trợ lý AI Sư phạm** của English Classroom Decoration. Em có thể giúp Thầy/Cô:
+Em là **trợ lý AI sư phạm** của English Classroom Decoration. Em có thể giúp thầy/cô:
 
 - Gợi ý **trò chơi khởi động** (warm-up) phù hợp từng khối lớp
 - Soạn **câu lệnh giao tiếp lớp học** bằng tiếng Anh kèm phiên âm IPA
 - Sáng tác **slogan & ý tưởng trang trí** lớp học theo chủ đề
 - Tư vấn **hoạt động dạy học**, lời khen và lời dặn dò song ngữ
 
-📌 Thầy/Cô đang có **${favorites.length}** slogan yêu thích và **${collection.length}** slogan trong Bộ sưu tập AI.
+📌 Thầy/Cô đang có **${favorites.length}** slogan yêu thích và **${collection.length}** slogan trong bộ sưu tập AI.
 
-Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
+Hôm nay thầy/cô cần em hỗ trợ gì ạ?`;
 
   return (
     <>
@@ -247,7 +247,7 @@ Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
             exit={{ scale: 0, opacity: 0 }}
             whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.94 }}
-            aria-label={ready ? 'Mở Trợ lý AI' : 'Mở Trợ lý AI (chưa cấu hình API key)'}
+            aria-label={ready ? 'Mở trợ lý AI' : 'Mở trợ lý AI (chưa cấu hình API key)'}
             aria-haspopup="dialog"
             className="group fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#1E3A8A] to-[#4338CA] text-white shadow-xl shadow-indigo-900/30 ring-4 ring-white/80 focus-visible:outline-none focus-visible:ring-amber-300 dark:ring-white/10 md:bottom-6 md:right-6"
           >
@@ -265,7 +265,7 @@ Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
               aria-hidden="true"
             />
             <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-lg bg-slate-900 px-2.5 py-1 text-xs font-medium text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100 sm:block">
-              Trợ lý AI Sư phạm
+              Trợ lý AI sư phạm
             </span>
           </motion.button>
         )}
@@ -341,7 +341,7 @@ Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
                 <HeaderButton label="Cuộc trò chuyện mới" onClick={reset}>
                   <RotateCcw className="h-5 w-5" />
                 </HeaderButton>
-                <HeaderButton label="Đóng Trợ lý AI" onClick={() => chatUiStore.close()}>
+                <HeaderButton label="Đóng trợ lý AI" onClick={() => chatUiStore.close()}>
                   <X className="h-5 w-5" />
                 </HeaderButton>
               </div>
@@ -360,10 +360,10 @@ Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
                 <div className="ml-10 rounded-2xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-700/60 dark:bg-amber-950/30 dark:text-amber-100">
                   <p className="flex items-start gap-2">
                     <KeyRound className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                    Cần một API key Google AI (miễn phí tại Google AI Studio) để trò chuyện. Key chỉ lưu trong trình duyệt của Thầy/Cô.
+                    Cần một API key Google AI (miễn phí tại Google AI Studio) để trò chuyện. Key chỉ lưu trong trình duyệt của thầy/cô.
                   </p>
                   <button type="button" onClick={onOpenSettings} className={buttonClass('accent', 'mt-2 text-sm')}>
-                    <Settings2 className="h-4 w-4" aria-hidden="true" /> Mở Cài đặt AI
+                    <Settings2 className="h-4 w-4" aria-hidden="true" /> Mở cài đặt AI
                   </button>
                 </div>
               )}
@@ -412,7 +412,7 @@ Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
                       </button>
                       {SETTINGS_ERRORS.includes(failure.type) && (
                         <button type="button" onClick={onOpenSettings} className={buttonClass('soft', 'text-sm')}>
-                          <Settings2 className="h-4 w-4" aria-hidden="true" /> Mở Cài đặt
+                          <Settings2 className="h-4 w-4" aria-hidden="true" /> Mở cài đặt
                         </button>
                       )}
                     </div>
@@ -429,7 +429,7 @@ Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
             <form onSubmit={handleSubmit} className="border-t border-border bg-card px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">
               <div className="flex items-end gap-2">
                 <label htmlFor="ai-chat-input" className="sr-only">
-                  Nhập câu hỏi cho Trợ lý AI
+                  Nhập câu hỏi cho trợ lý AI
                 </label>
                 <textarea
                   id="ai-chat-input"
@@ -442,7 +442,7 @@ Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
                     resizeTextarea();
                   }}
                   onKeyDown={handleTextareaKeyDown}
-                  placeholder="Nhập câu hỏi hoặc yêu cầu cho Trợ lý AI (Shift + Enter xuống dòng)…"
+                  placeholder="Nhập câu hỏi hoặc yêu cầu cho trợ lý AI (Shift + Enter xuống dòng)…"
                   className="max-h-40 min-h-11 flex-1 resize-none rounded-xl border border-input bg-background px-3 py-2.5 text-sm leading-relaxed outline-none transition-colors placeholder:text-muted-foreground focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
                 />
                 {busy ? (
@@ -468,7 +468,7 @@ Hôm nay Thầy/Cô cần em hỗ trợ gì ạ?`;
                 )}
               </div>
               <p className="mt-1.5 text-center text-[11px] text-muted-foreground">
-                AI có thể sai sót — Thầy/Cô vui lòng kiểm tra lại trước khi sử dụng.
+                AI có thể sai sót — thầy/cô vui lòng kiểm tra lại trước khi sử dụng.
               </p>
             </form>
           </motion.section>

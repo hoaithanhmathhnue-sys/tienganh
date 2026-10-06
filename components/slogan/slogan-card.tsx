@@ -75,7 +75,7 @@ function SloganCardBase({ slogan, index, topic, onPoster, onRemove, onPractice }
               type="button"
               onClick={() => onRemove(slogan)}
               aria-label={`Xoá khỏi bộ sưu tập: ${slogan.en}`}
-              title="Xoá khỏi Bộ sưu tập AI"
+              title="Xoá khỏi bộ sưu tập AI"
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
             >
               <Trash2 className="h-4 w-4" aria-hidden="true" />

@@ -33,7 +33,7 @@ const matches = (s: Slogan, query: string) =>
 
 const removeFromCollection = (slogan: Slogan) => {
   collectionStore.remove(sloganId(slogan));
-  toast.success('Đã xoá khỏi Bộ sưu tập AI');
+  toast.success('Đã xoá khỏi bộ sưu tập AI');
 };
 
 interface PresentationState {
@@ -106,9 +106,9 @@ export default function SloganApp() {
 
   const clearCollection = () => {
     if (collection.length === 0) return;
-    if (window.confirm(`Xoá toàn bộ ${collection.length} slogan trong Bộ sưu tập AI? Thao tác này không thể hoàn tác.`)) {
+    if (window.confirm(`Xoá toàn bộ ${collection.length} slogan trong bộ sưu tập AI? Thao tác này không thể hoàn tác.`)) {
       collectionStore.clear();
-      toast.success('Đã xoá toàn bộ Bộ sưu tập AI');
+      toast.success('Đã xoá toàn bộ bộ sưu tập AI');
     }
   };
 
@@ -117,7 +117,7 @@ export default function SloganApp() {
     ...categories.map((c) => ({ id: c.id as View, label: `${c.icon} ${c.name}` })),
     { id: 'classroom', label: `🗣️ Câu lệnh lớp học (${CLASSROOM_PHRASE_COUNT})` },
     { id: 'favorites', label: `💛 Yêu thích (${favorites.length})` },
-    { id: 'ai', label: `✨ AI & Bộ sưu tập (${collection.length})` },
+    { id: 'ai', label: `✨ AI & bộ sưu tập (${collection.length})` },
   ];
 
   const resultCount = visibleSlogans.length;
@@ -160,7 +160,7 @@ export default function SloganApp() {
 
           <p className="mx-auto mt-5 max-w-2xl text-center text-base text-white/90 md:mx-0 md:text-left">
             Slogan và câu lệnh lớp học tiếng Anh dành cho giáo viên tiểu học — kèm phiên âm IPA, nghĩa tiếng Việt, luyện
-            nói chấm điểm, xuất poster A4, trình chiếu lên bảng và Trợ lý AI Sư phạm.
+            nói chấm điểm, xuất poster A4, trình chiếu lên bảng và trợ lý AI sư phạm.
           </p>
 
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap md:justify-start">
@@ -172,7 +172,7 @@ export default function SloganApp() {
               onClick={() => chatUiStore.open()}
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-5 text-base font-semibold text-[#1E3A8A] shadow-sm transition-all hover:bg-indigo-50 hover:shadow-md"
             >
-              <Bot className="h-5 w-5" aria-hidden="true" /> Hỏi Trợ lý AI
+              <Bot className="h-5 w-5" aria-hidden="true" /> Hỏi trợ lý AI
             </button>
             <Link
               href="/giao-an"

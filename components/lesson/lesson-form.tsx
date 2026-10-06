@@ -97,7 +97,7 @@ export function LessonForm({
         Bước 1: Cấu hình thông số &amp; nhập nội dung giáo án gốc
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Chọn khối lớp, môn học, trình độ tiếng Anh của Thầy/Cô và dán/tải nội dung Kế hoạch bài dạy để AI chuyển đổi song ngữ.
+        Chọn khối lớp, môn học, trình độ tiếng Anh của thầy/cô và dán/tải nội dung kế hoạch bài dạy để AI chuyển đổi song ngữ.
       </p>
 
       {/* ─── Thông số ─── */}
@@ -287,7 +287,7 @@ export function LessonForm({
           className={cn('mt-1 text-right text-xs', tooLong ? 'font-semibold text-amber-700 dark:text-amber-300' : 'text-muted-foreground')}
         >
           {source.length.toLocaleString('vi-VN')} / {MAX_SOURCE_CHARS.toLocaleString('vi-VN')} ký tự
-          {tooLong && ' — phần vượt quá sẽ không được gửi cho AI, Thầy/Cô nên rút gọn hoặc tách bài.'}
+          {tooLong && ' — phần vượt quá sẽ không được gửi cho AI, thầy/cô nên rút gọn hoặc tách bài.'}
         </p>
       </div>
 
@@ -306,7 +306,7 @@ export function LessonForm({
             </button>
             {error.canOpenSettings && (
               <button type="button" onClick={onOpenSettings} className={buttonClass('soft', 'text-sm')}>
-                <Settings2 className="h-4 w-4" aria-hidden="true" /> Mở Cài đặt AI
+                <Settings2 className="h-4 w-4" aria-hidden="true" /> Mở cài đặt AI
               </button>
             )}
           </div>

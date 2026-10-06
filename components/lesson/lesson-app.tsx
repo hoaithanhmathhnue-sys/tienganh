@@ -36,7 +36,7 @@ export function LessonApp() {
   const createLesson = async () => {
     setFormError(null);
     if (!isAiReady(aiSettings)) {
-      setFormError({ message: 'Thầy/Cô cần hoàn tất Cài đặt AI trước khi soạn giáo án song ngữ.', canOpenSettings: true });
+      setFormError({ message: 'Thầy/Cô cần hoàn tất cài đặt AI trước khi soạn giáo án song ngữ.', canOpenSettings: true });
       return;
     }
     const controller = new AbortController();
@@ -59,7 +59,7 @@ export function LessonApp() {
       const nextSavedLesson = createSavedLesson(result.plan, settings, result.model);
       saveLessonPlan(nextSavedLesson);
       setSavedLesson(nextSavedLesson);
-      toast.success('Đã soạn xong giáo án song ngữ', { description: 'Model: ' + result.model });
+      toast.success('Đã soạn xong giáo án song ngữ', { description: 'Mô hình: ' + result.model });
     } catch (error) {
       setFormError({ message: getFriendlyErrorMessage(parseApiError(error), aiSettings.provider), canOpenSettings: true });
     } finally {
@@ -80,7 +80,7 @@ export function LessonApp() {
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-indigo-100">Trợ lý giáo án</p>
             <h1 className="mt-1 font-display text-2xl font-extrabold tracking-tight sm:text-4xl">Soạn giáo án song ngữ Anh – Việt</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-indigo-100 sm:text-base">Tải hoặc dán Kế hoạch bài dạy, chọn mức tiếng Anh phù hợp và để AI tạo giáo án có thể xem, in hoặc xuất Word.</p>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-indigo-100 sm:text-base">Tải hoặc dán kế hoạch bài dạy, chọn mức tiếng Anh phù hợp và để AI tạo giáo án có thể xem, in hoặc xuất Word.</p>
           </div>
         </div>
         <div className="mt-5 flex flex-wrap gap-2 text-xs font-medium text-white/90">

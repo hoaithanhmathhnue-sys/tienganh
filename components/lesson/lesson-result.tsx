@@ -206,7 +206,7 @@ export function LessonResult({ saved, onRestart }: LessonResultProps) {
             <ClipboardCopy className="h-4 w-4" aria-hidden="true" /> Sao chép
           </button>
           <button type="button" onClick={() => askAssistant(lessonPlanChatPrompt(plan, CHAT_PROMPT_LIMIT))} className={buttonClass('soft', 'text-sm')}>
-            <Bot className="h-4 w-4" aria-hidden="true" /> Hỏi Trợ lý AI
+            <Bot className="h-4 w-4" aria-hidden="true" /> Hỏi trợ lý AI
           </button>
           <button type="button" onClick={onRestart} className={buttonClass('accent', 'text-sm')}>
             <FilePlus2 className="h-4 w-4" aria-hidden="true" /> Soạn giáo án khác
@@ -325,7 +325,7 @@ export function LessonResult({ saved, onRestart }: LessonResultProps) {
         )}
 
         <p className="mt-8 rounded-xl bg-muted/60 px-4 py-3 text-center text-xs text-muted-foreground print:hidden">
-          Giáo án do AI hỗ trợ soạn — Thầy/Cô vui lòng rà soát nội dung, phiên âm trước khi sử dụng chính thức.
+          Giáo án do AI hỗ trợ soạn — thầy/cô vui lòng rà soát nội dung, phiên âm trước khi sử dụng chính thức.
         </p>
       </article>
     </section>
