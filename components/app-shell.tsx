@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FileText, Megaphone, Settings2 } from 'lucide-react';
+import { FileText, GraduationCap, Megaphone, Settings2 } from 'lucide-react';
 import { AiAssistant } from '@/components/ai/ai-assistant';
 import { ApiSettingsDialog } from '@/components/ai/api-settings-dialog';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Slogan & câu lệnh', short: 'Slogan', icon: Megaphone },
+  { href: '/hoc-tap', label: 'Học tập', short: 'Học tập', icon: GraduationCap },
   { href: '/giao-an', label: 'Trợ lý giáo án', short: 'Giáo án', icon: FileText },
 ] as const;
 

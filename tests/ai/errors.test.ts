@@ -67,7 +67,7 @@ describe('shouldFallback', () => {
 describe('getFriendlyErrorMessage', () => {
   it('dùng đúng thông báo trong api.md', () => {
     expect(getFriendlyErrorMessage('MISSING_API_KEY', 'gemini')).toBe('Vui lòng cấu hình API Key trước khi sử dụng tính năng này.');
-    expect(getFriendlyErrorMessage('INVALID_API_KEY', 'gemini')).toBe('API Key không hợp lệ hoặc đã hết hạn. Vui lòng kiểm tra lại trong Cài đặt.');
+    expect(getFriendlyErrorMessage('INVALID_API_KEY', 'gemini')).toBe('API key không hợp lệ hoặc đã hết hạn. Vui lòng kiểm tra lại trong cài đặt.');
     expect(getFriendlyErrorMessage('PERMISSION_DENIED', 'gemini')).toBe('API key không có quyền truy cập Gemini API.');
     expect(getFriendlyErrorMessage('QUOTA_EXCEEDED', 'gemini')).toBe('Đã hết quota hoặc vượt giới hạn tốc độ API. Vui lòng đợi rồi thử lại.');
   });

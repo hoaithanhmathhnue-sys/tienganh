@@ -32,7 +32,7 @@ const siteUrl =
 
 const title = 'English Classroom Decoration — Trường TH Bế Văn Đàn'
 const description =
-  'Slogan tiếng Anh trang trí lớp học kèm IPA và nghĩa tiếng Việt, câu lệnh lớp học, luyện nói chấm điểm, Trợ lý AI và Trợ lý soạn giáo án song ngữ Anh – Việt (xuất Word) — dành cho giáo viên tiểu học.'
+  'Slogan tiếng Anh trang trí lớp học kèm IPA và nghĩa tiếng Việt, câu lệnh lớp học, luyện nói chấm điểm, trợ lý AI và trợ lý soạn giáo án song ngữ Anh – Việt (xuất Word) — dành cho giáo viên tiểu học.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
