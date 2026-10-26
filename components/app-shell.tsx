@@ -91,9 +91,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className={cn('min-h-screen bg-background transition-[padding] duration-300', sidebarOpen && 'lg:pr-[440px]')}>
       <div className="print:hidden">
-        <div className="bg-[#0B1736] text-white">
+        <div className="bg-[#004D40] text-white">
           <p className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 py-2 text-center text-[11px] sm:text-xs">
-            <span className="rounded bg-[#1d4ed8] px-2 py-0.5 font-bold uppercase tracking-wide">Teacher English Hub</span>
+            <span className="rounded bg-[#00897B] px-2 py-0.5 font-bold uppercase tracking-wide">Teacher English Hub</span>
             <span className="font-semibold uppercase tracking-wide">Learn – Teach – Use English every day</span>
             <span className="hidden text-white/75 md:inline">· Học để sử dụng – AI đồng hành cùng giáo viên tiểu học</span>
           </p>
@@ -104,15 +104,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Link
               href="/"
               onClick={closeMobile}
-              className="flex min-w-0 shrink-0 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d4ed8]"
+              className="flex min-w-0 shrink-0 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00897B]"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#1e3a8a] text-white shadow-sm">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#00796B] text-white shadow-sm">
                 <GraduationCap className="h-6 w-6" aria-hidden="true" />
               </span>
               <span className="min-w-0 leading-tight">
                 <span className="flex items-center gap-2">
-                  <span className="truncate font-display text-base font-extrabold tracking-tight text-[#0B1736] dark:text-white sm:text-xl">
-                    TEACHER ENGLISH <span className="text-[#1d4ed8] dark:text-sky-300">HUB</span>
+                  <span className="truncate font-display text-base font-extrabold tracking-tight text-[#004D40] dark:text-white sm:text-xl">
+                    TEACHER ENGLISH <span className="text-[#00897B] dark:text-teal-300">HUB</span>
                   </span>
                   <span className="hidden rounded-md border border-amber-300 bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-700 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300 sm:inline">
                     Tiểu học
@@ -153,7 +153,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <button
                 type="button"
                 onClick={appUiStore.openSettings}
-                className="relative inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#1e3a8a] px-3 text-sm font-bold uppercase tracking-wide text-white shadow-sm transition-colors hover:bg-[#1d4ed8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1d4ed8] sm:px-4"
+                className="relative inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#00796B] px-3 text-sm font-bold uppercase tracking-wide text-white shadow-sm transition-colors hover:bg-[#00897B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#00897B] sm:px-4"
                 aria-label={aiReady ? 'Cài đặt AI (đã cấu hình)' : 'Cài đặt AI (chưa có API key)'}
               >
                 <Settings2 className="h-5 w-5" aria-hidden="true" />
@@ -221,8 +221,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 }
 
 const navItemClass =
-  'inline-flex min-h-11 items-center gap-2 rounded-xl px-4 text-sm font-bold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d4ed8]';
-const navActiveClass = 'bg-[#1e3a8a] text-white shadow-sm';
+  'inline-flex min-h-11 items-center gap-2 rounded-xl px-4 text-sm font-bold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00897B]';
+const navActiveClass = 'bg-[#00796B] text-white shadow-sm';
 const navIdleClass = 'text-slate-600 hover:bg-muted hover:text-foreground dark:text-slate-300';
 
 function NavDropdown({ group, active }: { group: MenuGroup; active: boolean }) {
@@ -274,10 +274,10 @@ function NavDropdown({ group, active }: { group: MenuGroup; active: boolean }) {
 function MenuEntry({ item, onDone }: { item: MenuItem; onDone: () => void }) {
   const Icon = item.icon;
   const className =
-    'flex w-full items-start gap-3 rounded-xl p-3 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d4ed8]';
+    'flex w-full items-start gap-3 rounded-xl p-3 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00897B]';
   const content = (
     <>
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-[#1e3a8a] dark:bg-sky-500/15 dark:text-sky-300">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-teal-50 text-[#00796B] dark:bg-teal-500/15 dark:text-teal-300">
         <Icon className="h-4 w-4" aria-hidden="true" />
       </span>
       <span className="min-w-0">

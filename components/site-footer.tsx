@@ -4,7 +4,7 @@ import { VisitCounter } from '@/components/visit-counter';
 /** Chân trang chung: thông tin nhà trường và bộ đếm lượt truy cập. */
 export function SiteFooter() {
   return (
-    <footer className="bg-[#0B1736] text-white print:hidden">
+    <footer className="bg-[#004D40] text-white print:hidden">
       <div className="mx-auto max-w-[1200px] px-4 pb-24 pt-8 md:pb-8">
         <div className="flex flex-col items-center gap-4 md:flex-row">
           <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-white">

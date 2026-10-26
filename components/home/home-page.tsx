@@ -43,7 +43,7 @@ const STATS: { eyebrow: string; title: string; note: string; icon: LucideIcon; h
     note: 'Toán, Tiếng Việt, Mỹ thuật…',
     icon: BookOpen,
     href: '/hoc-tap?tab=study',
-    tone: 'bg-blue-50 text-[#1e3a8a] dark:bg-sky-500/15 dark:text-sky-300',
+    tone: 'bg-teal-50 text-[#00796B] dark:bg-teal-500/15 dark:text-teal-300',
   },
   {
     eyebrow: 'Ngân hàng câu lệnh',
@@ -51,7 +51,7 @@ const STATS: { eyebrow: string; title: string; note: string; icon: LucideIcon; h
     note: 'Đúng ngữ cảnh lớp học',
     icon: Volume2,
     href: '/slogan?view=classroom',
-    tone: 'bg-blue-50 text-[#1e3a8a] dark:bg-sky-500/15 dark:text-sky-300',
+    tone: 'bg-teal-50 text-[#00796B] dark:bg-teal-500/15 dark:text-teal-300',
   },
   {
     eyebrow: 'Trợ lý soạn thảo',
@@ -67,7 +67,7 @@ const STATS: { eyebrow: string; title: string; note: string; icon: LucideIcon; h
     note: 'Chấm điểm & nhận xét phát âm',
     icon: Mic,
     href: '/hoc-tap?tab=pronunciation',
-    tone: 'bg-blue-50 text-[#1e3a8a] dark:bg-sky-500/15 dark:text-sky-300',
+    tone: 'bg-teal-50 text-[#00796B] dark:bg-teal-500/15 dark:text-teal-300',
   },
 ];
 
@@ -103,26 +103,26 @@ export function HomePage() {
     <>
       <main className="mx-auto w-full max-w-[1200px] px-3 pb-12 pt-4 sm:px-4 sm:pt-6">
         {/* ─── HERO ─── */}
-        <section aria-labelledby="home-title" className="relative isolate overflow-hidden rounded-[28px] bg-[#1b3a94] shadow-xl">
+        <section aria-labelledby="home-title" className="relative isolate overflow-hidden rounded-[28px] bg-[#00695C] shadow-xl">
           <div className="absolute inset-x-0 top-0 -z-10 h-60 md:inset-y-0 md:left-auto md:right-0 md:h-auto md:w-[60%]">
             <Image
-              src="/truong.jpg"
+              src="/truong2.jpg"
               alt="Cổng Trường Tiểu học Bế Văn Đàn"
               fill
               priority
               sizes="(min-width: 768px) 60vw, 100vw"
-              className="object-cover object-[30%_40%]"
+              className="object-cover object-[50%_40%]"
             />
           </div>
           <div
-            className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-[0px] via-[#1b3a94]/70 via-[150px] to-[#1b3a94] to-[240px] md:bg-gradient-to-r md:from-[#1b3a94] md:from-[38%] md:via-[#1b3a94]/70 md:via-[50%] md:to-transparent md:to-[66%]"
+            className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent from-[0px] via-[#00695C]/70 via-[150px] to-[#00695C] to-[240px] md:bg-gradient-to-r md:from-[#00695C] md:from-[38%] md:via-[#00695C]/70 md:via-[50%] md:to-transparent md:to-[66%]"
             aria-hidden="true"
           />
           <div className="px-5 pb-10 pt-48 sm:px-10 sm:pb-14 md:pt-14 lg:px-14 lg:py-16">
             <h1 id="home-title" className="max-w-3xl font-display text-4xl font-extrabold leading-tight tracking-tight text-white drop-shadow-md sm:text-5xl lg:text-6xl">
               English for Primary Teachers
             </h1>
-            <p className="mt-5 font-display text-lg font-extrabold uppercase tracking-wide text-amber-300 sm:text-2xl lg:text-3xl">
+            <p className="mt-5 font-display text-lg font-extrabold uppercase tracking-wide text-amber-300 sm:text-2xl lg:text-[26px]">
               Learn – Teach – Use English every day
             </p>
             <p className="mt-3 max-w-xl text-base leading-relaxed text-white/90 sm:text-lg">
@@ -131,7 +131,7 @@ export function HomePage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/hoc-tap?tab=study"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#2563eb] px-6 text-sm font-extrabold uppercase tracking-wide text-white shadow-lg shadow-blue-900/30 transition-colors hover:bg-[#1d4ed8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-amber-400 px-6 text-sm font-extrabold uppercase tracking-wide text-amber-950 shadow-lg shadow-teal-950/30 transition-colors hover:bg-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300"
               >
                 <BookOpen className="h-5 w-5" aria-hidden="true" /> Bắt đầu tự học <ArrowRight className="h-5 w-5" aria-hidden="true" />
               </Link>
@@ -145,7 +145,7 @@ export function HomePage() {
             <ul className="mt-8 flex max-w-3xl flex-wrap gap-x-8 gap-y-3 text-sm text-white/90">
               {HIGHLIGHTS.map((text) => (
                 <li key={text} className="inline-flex items-center gap-2">
-                  <CircleCheck className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" /> {text}
+                  <CircleCheck className="h-4 w-4 shrink-0 text-teal-200" aria-hidden="true" /> {text}
                 </li>
               ))}
             </ul>
@@ -158,7 +158,7 @@ export function HomePage() {
             <Link
               key={eyebrow}
               href={href}
-              className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d4ed8]"
+              className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00897B]"
             >
               <div className="flex items-start justify-between gap-3">
                 <p className="pt-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">{eyebrow}</p>
@@ -175,16 +175,16 @@ export function HomePage() {
         {/* ─── LỘ TRÌNH & CÂU CỦA NGÀY ─── */}
         <div className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_1fr]">
           <section aria-labelledby="steps-title" className="rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6">
-            <p className="text-xs font-bold uppercase tracking-wide text-[#1d4ed8] dark:text-sky-300">5–10 phút mỗi ngày</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-[#00897B] dark:text-teal-300">5–10 phút mỗi ngày</p>
             <h2 id="steps-title" className="mt-1 font-display text-2xl font-extrabold">Lộ trình tự học cho giáo viên</h2>
             <ol className="mt-5 space-y-3">
               {STEPS.map((item) => (
                 <li key={item.step} className="flex gap-4 rounded-2xl bg-muted/50 p-4">
-                  <span className="font-display text-2xl font-extrabold text-[#1d4ed8] dark:text-sky-300">{item.step}</span>
+                  <span className="font-display text-2xl font-extrabold text-[#00897B] dark:text-teal-300">{item.step}</span>
                   <div className="min-w-0">
                     <h3 className="font-bold">{item.title}</h3>
                     <p className="mt-0.5 text-sm text-muted-foreground">{item.text}</p>
-                    <Link href={item.href} className="mt-2 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-[#1d4ed8] hover:underline dark:text-sky-300">
+                    <Link href={item.href} className="mt-2 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-[#00897B] hover:underline dark:text-teal-300">
                       {item.cta} <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </Link>
                   </div>
@@ -193,12 +193,12 @@ export function HomePage() {
             </ol>
           </section>
 
-          <section aria-labelledby="today-title" className="rounded-3xl bg-gradient-to-br from-[#0B1736] to-[#1e3a8a] p-5 text-white shadow-lg sm:p-6">
+          <section aria-labelledby="today-title" className="rounded-3xl bg-gradient-to-br from-[#004D40] to-[#00796B] p-5 text-white shadow-lg sm:p-6">
             <p className="text-xs font-bold uppercase tracking-wide text-amber-300">Today’s English</p>
             <h2 id="today-title" className="mt-1 font-display text-2xl font-extrabold">
               {daily ? `${daily.icon} ${daily.title}` : 'Giao tiếp học đường hôm nay'}
             </h2>
-            {daily && <p className="mt-1 text-sm text-indigo-100">{daily.description}</p>}
+            {daily && <p className="mt-1 text-sm text-teal-50">{daily.description}</p>}
             <ul className="mt-4 space-y-3">
               {daily
                 ? daily.phrases.map((phrase) => (
@@ -206,8 +206,8 @@ export function HomePage() {
                       <SpeakButton text={phrase.en} variant="onDark" showLabel={false} />
                       <div className="min-w-0">
                         <p lang="en" className="font-bold">“{phrase.en}”</p>
-                        <p className="text-sm text-indigo-100">{phrase.vi}</p>
-                        <p className="mt-0.5 text-xs text-indigo-200/90">🏫 {phrase.context}</p>
+                        <p className="text-sm text-teal-50">{phrase.vi}</p>
+                        <p className="mt-0.5 text-xs text-teal-100/90">🏫 {phrase.context}</p>
                       </div>
                     </li>
                   ))
@@ -230,7 +230,7 @@ export function HomePage() {
             {TOOLS.map(({ title, text, icon: Icon, href, action }) => {
               const body = (
                 <>
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#1e3a8a] dark:bg-sky-500/15 dark:text-sky-300">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-[#00796B] dark:bg-teal-500/15 dark:text-teal-300">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span className="min-w-0">
@@ -240,7 +240,7 @@ export function HomePage() {
                 </>
               );
               const className =
-                'flex h-full w-full items-start gap-3 rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1d4ed8]';
+                'flex h-full w-full items-start gap-3 rounded-2xl border border-border bg-card p-4 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00897B]';
               return href ? (
                 <Link key={title} href={href} className={className}>
                   {body}
