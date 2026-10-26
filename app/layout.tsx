@@ -30,7 +30,7 @@ const siteUrl =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : 'http://localhost:3000')
 
-const title = 'English Classroom Decoration — Trường TH Bế Văn Đàn'
+const title = 'Teacher English Hub — Trợ lý Tiếng Anh & Giáo án Song ngữ | TH Bế Văn Đàn'
 const description =
   'Slogan tiếng Anh trang trí lớp học kèm IPA và nghĩa tiếng Việt, câu lệnh lớp học, luyện nói chấm điểm, trợ lý AI và trợ lý soạn giáo án song ngữ Anh – Việt (xuất Word) — dành cho giáo viên tiểu học.'
 
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title,
   description,
-  applicationName: 'English Classroom Decoration',
+  applicationName: 'Teacher English Hub',
   keywords: ['slogan tiếng Anh', 'trang trí lớp học', 'giáo viên tiếng Anh tiểu học', 'IPA', 'poster lớp học', 'giáo án song ngữ', 'Teacher Talk'],
   icons: {
     icon: '/favicon.svg',
@@ -57,7 +57,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#00796B' },
+    { media: '(prefers-color-scheme: light)', color: '#1E3A8A' },
     { media: '(prefers-color-scheme: dark)', color: '#0E1A1A' },
   ],
 }

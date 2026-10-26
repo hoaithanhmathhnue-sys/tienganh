@@ -1,12 +1,14 @@
 'use client';
 
 import { useMemo, useRef, useState } from 'react';
-import { Award, BookOpenCheck, Check, ChevronRight, Flame, GraduationCap, LayoutDashboard, Mic, RotateCcw, Search, Sparkles } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { Award, BookOpenCheck, Check, Flame, GraduationCap, LayoutDashboard, Mic, RotateCcw, Search, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { SpeakButton } from '@/components/slogan/speak-button';
 import { SpeechRateControl } from '@/components/slogan/speech-rate-control';
 import { buttonClass } from '@/components/ui/button-class';
-import { DAILY_SCHOOL_TOPICS, getDailySchoolSet, LEARNING_SUBJECTS, SELF_STUDY_PHRASES, type LearningPhrase } from '@/lib/learning-content';
+import { DAILY_SCHOOL_GROUPS } from '@/lib/daily-school-english';
+import { getDailySchoolSet, LEARNING_SUBJECTS, SELF_STUDY_PHRASES, type LearningPhrase } from '@/lib/learning-content';
 import { getBadges, learningProgressStore, useLearningProgress } from '@/lib/learning-progress';
 import { getPronunciationFeedback, scoreBestAlternative, type PronunciationResult } from '@/lib/pronunciation';
 import { speechManager } from '@/lib/speech';
@@ -24,9 +26,16 @@ const TAB_ITEMS: { id: LearningTab; label: string; short: string; icon: typeof L
 ];
 
 const cardClass = 'rounded-2xl border border-border bg-card shadow-sm';
+const STUDY_PAGE_SIZE = 40;
 
+const isLearningTab = (value: string | null): value is LearningTab => TAB_ITEMS.some((item) => item.id === value);
+
+/** Tab đang mở lấy từ `?tab=` để thanh điều hướng chung có thể mở thẳng từng tính năng. */
 export function LearningApp() {
-  const [tab, setTab] = useState<LearningTab>('progress');
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const tab: LearningTab = isLearningTab(tabParam) ? tabParam : 'progress';
+  const setTab = (next: LearningTab) => window.history.replaceState(null, '', '?tab=' + next);
   const progress = useLearningProgress();
   const badges = getBadges(progress);
 
@@ -79,6 +88,7 @@ function SelfStudyPanel() {
   const progress = useLearningProgress();
   const [subject, setSubject] = useState('all');
   const [query, setQuery] = useState('');
+  const [limit, setLimit] = useState(STUDY_PAGE_SIZE);
   const categories = [
     { id: 'all', label: 'Tất cả bài học', eyebrow: 'Tất cả bài học', icon: '✨' },
     ...LEARNING_SUBJECTS,
@@ -101,7 +111,7 @@ function SelfStudyPanel() {
           {categories.map((item) => {
             const count = item.id === 'all' ? SELF_STUDY_PHRASES.length : SELF_STUDY_PHRASES.filter((phrase) => phrase.subjectId === item.id).length;
             return (
-              <button key={item.id} type="button" onClick={() => setSubject(item.id)} aria-pressed={subject === item.id} className={cn('min-h-24 rounded-xl border p-3 text-left transition-colors', subject === item.id ? 'border-[#2444a2] bg-[#2444a2] text-white shadow-sm' : 'border-border bg-card text-foreground hover:bg-muted')}>
+              <button key={item.id} type="button" onClick={() => { setSubject(item.id); setLimit(STUDY_PAGE_SIZE); }} aria-pressed={subject === item.id} className={cn('min-h-24 rounded-xl border p-3 text-left transition-colors', subject === item.id ? 'border-[#2444a2] bg-[#2444a2] text-white shadow-sm' : 'border-border bg-card text-foreground hover:bg-muted')}>
                 <p className={cn('text-[10px] font-bold uppercase tracking-wide', subject === item.id ? 'text-indigo-100' : 'text-muted-foreground')}>{item.eyebrow}</p>
                 <p className="mt-1 text-sm font-bold">{item.icon} {item.label}</p>
                 <p className={cn('mt-1 text-xs', subject === item.id ? 'text-indigo-100' : 'text-muted-foreground')}>{count} mẫu câu</p>
@@ -110,9 +120,16 @@ function SelfStudyPanel() {
           })}
         </div>
       </section>
-      <label className="relative block"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm theo tiếng Anh, tiếng Việt hoặc tình huống…" className="min-h-11 w-full rounded-xl border border-input bg-card py-2 pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" /></label>
+      <label className="relative block"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><input value={query} onChange={(event) => { setQuery(event.target.value); setLimit(STUDY_PAGE_SIZE); }} placeholder="Tìm theo tiếng Anh, tiếng Việt hoặc tình huống…" className="min-h-11 w-full rounded-xl border border-input bg-card py-2 pl-10 pr-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" /></label>
       <p className="text-sm text-muted-foreground">Hiển thị <strong className="text-foreground">{phrases.length}</strong> mẫu câu.</p>
-      <div className="grid gap-3 md:grid-cols-2">{phrases.map((phrase) => <PhraseCard key={phrase.id} phrase={phrase} completed={progress.learnedPhraseIds.includes(phrase.id)} onComplete={() => { learningProgressStore.markPhraseLearned(phrase.id); toast.success('Đã thêm 10 XP', { description: 'Mẫu câu đã được lưu vào tiến trình tự học.' }); }} />)}</div>
+      <div className="grid gap-3 md:grid-cols-2">{phrases.slice(0, limit).map((phrase) => <PhraseCard key={phrase.id} phrase={phrase} completed={progress.learnedPhraseIds.includes(phrase.id)} onComplete={() => { learningProgressStore.markPhraseLearned(phrase.id); toast.success('Đã thêm 10 XP', { description: 'Mẫu câu đã được lưu vào tiến trình tự học.' }); }} />)}</div>
+      {phrases.length > limit && (
+        <div className="flex justify-center">
+          <button type="button" onClick={() => setLimit((value) => value + STUDY_PAGE_SIZE)} className={buttonClass('secondary', 'text-sm')}>
+            Xem thêm {Math.min(STUDY_PAGE_SIZE, phrases.length - limit)} mẫu câu ({limit}/{phrases.length})
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -125,6 +142,8 @@ function PronunciationPanel() {
   const supported = useSpeechRecognitionSupported();
   const progress = useLearningProgress();
   const [selectedId, setSelectedId] = useState(SELF_STUDY_PHRASES[0].id);
+  const [subject, setSubject] = useState('all');
+  const choices = subject === 'all' ? SELF_STUDY_PHRASES : SELF_STUDY_PHRASES.filter((item) => item.subjectId === subject);
   const [state, setState] = useState<PracticeState>({ status: 'idle' });
   const controllerRef = useRef<AbortController | null>(null);
   const phrase = SELF_STUDY_PHRASES.find((item) => item.id === selectedId) ?? SELF_STUDY_PHRASES[0];
@@ -158,8 +177,15 @@ function PronunciationPanel() {
       <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
         <section className={cardClass + ' p-4'}>
           <h3 className="font-bold">Chọn câu tiếng Anh luyện tập</h3>
+          <label className="mt-3 block text-xs font-semibold text-muted-foreground">
+            Môn học
+            <select value={subject} onChange={(event) => setSubject(event.target.value)} className="mt-1 min-h-11 w-full rounded-xl border border-input bg-card px-3 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+              <option value="all">Tất cả ({SELF_STUDY_PHRASES.length} câu)</option>
+              {LEARNING_SUBJECTS.map((item) => <option key={item.id} value={item.id}>{item.icon} {item.label}</option>)}
+            </select>
+          </label>
           <div className="mt-3 max-h-[430px] space-y-2 overflow-y-auto pr-1">
-            {SELF_STUDY_PHRASES.map((item) => (
+            {choices.map((item) => (
               <button key={item.id} type="button" onClick={() => { setSelectedId(item.id); setState({ status: 'idle' }); }} className={cn('w-full rounded-xl border p-3 text-left', item.id === phrase.id ? 'border-violet-500 bg-violet-50 dark:bg-violet-500/15' : 'border-border hover:bg-muted')}>
                 <p lang="en" className="text-sm font-bold">“{item.en}”</p>
                 <p className="mt-1 text-xs text-muted-foreground">{item.vi}</p>
@@ -197,5 +223,34 @@ function PronunciationFeedback({ result, best }: { result: PronunciationResult; 
 function DailySchoolPanel() {
   const progress = useLearningProgress();
   const daily = getDailySchoolSet();
-  return <div className="space-y-5"><header className="rounded-3xl bg-gradient-to-r from-[#091b51] to-[#1d428e] p-5 text-white shadow-lg sm:p-6"><p className="text-xs font-bold uppercase tracking-wide text-amber-200">Daily school English</p><h2 className="mt-1 font-display text-2xl font-extrabold">Giao tiếp học đường mỗi ngày</h2><p className="mt-1 max-w-2xl text-sm text-indigo-100">Mỗi ngày có ba mẫu câu mới theo một tình huống lớp học. Hoàn thành để tích lũy XP và huy hiệu.</p></header><section className="rounded-3xl border border-emerald-700/30 bg-emerald-950 p-4 text-white shadow-sm sm:p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-wide text-emerald-200">Today’s English</p><h3 className="mt-1 font-display text-xl font-bold">{daily.icon} {daily.title}</h3><p className="mt-1 text-sm text-emerald-100">{daily.description}</p></div><span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">{progress.completedDailyPhraseIds.filter((id) => daily.phrases.some((phrase) => phrase.id === id)).length}/{daily.phrases.length} hoàn thành</span></div><div className="mt-4 grid gap-3 md:grid-cols-3">{daily.phrases.map((phrase) => <article key={phrase.id} className="rounded-2xl border border-emerald-400/30 bg-white/10 p-4"><p lang="en" className="font-display text-base font-bold">“{phrase.en}”</p><p className="mt-1 text-sm text-emerald-100">{phrase.vi}</p><div className="mt-4 flex gap-2"><SpeakButton text={phrase.en} variant="onDark" showLabel={false} /><button type="button" onClick={() => { learningProgressStore.markDailyCompleted(phrase.id); toast.success('Đã hoàn thành mẫu câu hằng ngày', { description: '+15 XP' }); }} disabled={progress.completedDailyPhraseIds.includes(phrase.id)} className={cn('min-h-11 flex-1 rounded-xl px-3 text-sm font-semibold transition-colors', progress.completedDailyPhraseIds.includes(phrase.id) ? 'bg-white/15 text-white/70' : 'bg-amber-400 text-amber-950 hover:bg-amber-300')}>{progress.completedDailyPhraseIds.includes(phrase.id) ? 'Đã học' : 'Hoàn thành'}</button></div></article>)}</div></section><section className={cardClass + ' p-4 sm:p-6'}><div className="flex items-center gap-2"><GraduationCap className="h-5 w-5 text-primary" /><div><h3 className="font-display text-lg font-bold">Chủ đề giao tiếp học đường</h3><p className="text-xs text-muted-foreground">Kho câu lệnh có sẵn trong ứng dụng, sắp theo tình huống thực tế.</p></div></div><div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{DAILY_SCHOOL_TOPICS.map((topic) => <article key={topic.id} className="rounded-2xl border border-border bg-background p-4"><div className="flex items-start gap-3"><span className="text-2xl">{topic.icon}</span><div><h4 className="font-bold">{topic.name}</h4><p className="mt-1 text-xs text-muted-foreground">{topic.description}</p><p className="mt-3 text-xs font-semibold text-primary">{topic.count} mẫu câu <ChevronRight className="inline h-3.5 w-3.5" /></p></div></div></article>)}</div></section></div>;
+  const [groupId, setGroupId] = useState(DAILY_SCHOOL_GROUPS[0].id);
+  const group = DAILY_SCHOOL_GROUPS.find((item) => item.id === groupId) ?? DAILY_SCHOOL_GROUPS[0];
+  return <div className="space-y-5"><header className="rounded-3xl bg-gradient-to-r from-[#091b51] to-[#1d428e] p-5 text-white shadow-lg sm:p-6"><p className="text-xs font-bold uppercase tracking-wide text-amber-200">Daily school English</p><h2 className="mt-1 font-display text-2xl font-extrabold">Giao tiếp học đường mỗi ngày</h2><p className="mt-1 max-w-2xl text-sm text-indigo-100">Mỗi ngày có ba mẫu câu mới theo một tình huống trong trường. Hoàn thành để tích lũy XP và huy hiệu.</p></header><section className="rounded-3xl border border-emerald-700/30 bg-emerald-950 p-4 text-white shadow-sm sm:p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-wide text-emerald-200">Today’s English</p><h3 className="mt-1 font-display text-xl font-bold">{daily.icon} {daily.title}</h3><p className="mt-1 text-sm text-emerald-100">{daily.description}</p></div><span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">{progress.completedDailyPhraseIds.filter((id) => daily.phrases.some((phrase) => phrase.id === id)).length}/{daily.phrases.length} hoàn thành</span></div><div className="mt-4 grid gap-3 md:grid-cols-3">{daily.phrases.map((phrase) => <article key={phrase.id} className="flex flex-col rounded-2xl border border-emerald-400/30 bg-white/10 p-4"><p lang="en" className="font-display text-base font-bold">“{phrase.en}”</p><p className="mt-1 text-sm text-emerald-100">{phrase.vi}</p><p className="mt-1 font-mono text-xs text-emerald-200">{phrase.ipa}</p><p className="mt-2 text-xs text-emerald-200/90">🏫 {phrase.context}</p><div className="mt-auto flex gap-2 pt-4"><SpeakButton text={phrase.en} variant="onDark" showLabel={false} /><button type="button" onClick={() => { learningProgressStore.markDailyCompleted(phrase.id); toast.success('Đã hoàn thành mẫu câu hằng ngày', { description: '+15 XP' }); }} disabled={progress.completedDailyPhraseIds.includes(phrase.id)} className={cn('min-h-11 flex-1 rounded-xl px-3 text-sm font-semibold transition-colors', progress.completedDailyPhraseIds.includes(phrase.id) ? 'bg-white/15 text-white/70' : 'bg-amber-400 text-amber-950 hover:bg-amber-300')}>{progress.completedDailyPhraseIds.includes(phrase.id) ? 'Đã học' : 'Hoàn thành'}</button></div></article>)}</div></section>
+    <section className={cardClass + ' p-4 sm:p-6'} aria-labelledby="daily-groups-title">
+      <div className="flex items-center gap-2"><GraduationCap className="h-5 w-5 text-primary" aria-hidden="true" /><div><h3 id="daily-groups-title" className="font-display text-lg font-bold">{DAILY_SCHOOL_GROUPS.length} tình huống giao tiếp học đường</h3><p className="text-xs text-muted-foreground">Chọn một tình huống để nghe mẫu câu, phiên âm và cách dùng.</p></div></div>
+      <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Chọn tình huống giao tiếp">
+        {DAILY_SCHOOL_GROUPS.map((item) => (
+          <button key={item.id} type="button" onClick={() => setGroupId(item.id)} aria-pressed={item.id === group.id} className={cn('min-h-11 rounded-full border px-4 text-sm font-medium transition-colors', item.id === group.id ? 'border-[#1d3d92] bg-[#1d3d92] text-white shadow-sm' : 'border-border bg-background hover:bg-muted')}>
+            <span aria-hidden="true">{item.icon}</span> {item.title}
+          </button>
+        ))}
+      </div>
+      <div className="mt-5 rounded-2xl bg-muted/40 p-4">
+        <p className="text-xs font-bold uppercase tracking-wide text-primary">{group.title}</p>
+        <h4 className="mt-1 font-display text-lg font-bold">{group.icon} {group.name}</h4>
+        <p className="mt-1 text-sm text-muted-foreground">{group.description}</p>
+        <ol className="mt-4 grid gap-3 md:grid-cols-2">
+          {group.phrases.map((phrase) => (
+            <li key={phrase.en} className="rounded-2xl border border-border bg-card p-4">
+              <p lang="en" className="font-display text-base font-bold text-foreground">“{phrase.en}”</p>
+              <p className="mt-1 text-sm text-muted-foreground">{phrase.vi}</p>
+              <p className="mt-1 font-mono text-xs text-primary">{phrase.ipa}</p>
+              <p className="mt-2 text-xs text-muted-foreground"><span className="font-semibold text-foreground">Tình huống:</span> {phrase.situation}</p>
+              <div className="mt-3"><SpeakButton text={phrase.en} /></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  </div>;
 }

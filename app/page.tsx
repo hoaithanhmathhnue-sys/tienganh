@@ -1,5 +1,5 @@
-import SloganApp from "@/components/slogan-app";
+import { HomePage } from '@/components/home/home-page';
 
-export default function HomePage() {
-  return <SloganApp />;
+export default function Page() {
+  return <HomePage />;
 }
