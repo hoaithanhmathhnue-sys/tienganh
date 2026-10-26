@@ -1,8 +1,10 @@
-# English Classroom Decoration — Trường TH Bế Văn Đàn
+# Teacher English Hub — Trường TH Bế Văn Đàn
 
-Ứng dụng web hỗ trợ giáo viên tiếng Anh tiểu học trang trí lớp học:
+Ứng dụng web giúp giáo viên tiểu học tự học tiếng Anh thực hành, trang trí lớp học và soạn giáo án song ngữ:
 
-- 📚 **Thư viện slogan** theo danh mục, có phiên âm IPA và nghĩa tiếng Việt, tìm kiếm theo cả 3 trường.
+- 🏠 **Trang chủ** (`/`): banner ảnh trường, lối vào nhanh Tự học, Phòng luyện nói, Trợ lý giáo án, câu Daily School English của ngày.
+- 🎓 **Học tập** (`/hoc-tap?tab=study|pronunciation|daily|progress`): 796 mẫu câu theo 10 môn (Toán, Tiếng Việt, Mĩ thuật, Âm nhạc, GDTC, Lịch sử & Địa lí, Khoa học…), luyện phát âm chấm điểm, **Daily School English** 10 tình huống × 5 câu, tiến trình & huy hiệu.
+- 📚 **Thư viện slogan** (`/slogan`, 9 danh mục, 182 slogan) theo danh mục, có phiên âm IPA và nghĩa tiếng Việt, tìm kiếm theo cả 3 trường.
 - 🗣️ **Ngân hàng câu lệnh lớp học** (Classroom English): 124 câu theo 8 tình huống (chào hỏi, hướng dẫn, khen ngợi, quản lý lớp, trò chơi, kết thúc, học sinh ↔ giáo viên, học sinh ↔ học sinh).
 - 🔊 **Nghe phát âm** bằng giọng trình duyệt hoặc **giọng Gemini AI** (tuỳ chọn, tự chuyển về giọng trình duyệt khi lỗi), **tốc độ đọc 0.5x / 0.75x / 1x**.
 - 🎤 **Luyện nói & chấm điểm phát âm** từng từ ngay trên trình duyệt (Chrome/Edge, không cần API key).
@@ -85,15 +87,19 @@ Không cần khai báo API key trên Vercel vì AI chạy trực tiếp từ tr�
 ## Cấu trúc thư mục
 
 ```
-app/                 layout, trang chính, CSS toàn cục
+app/                 layout, trang chủ (/), /slogan, /hoc-tap, /giao-an, CSS toàn cục
 components/
   ai/                Trợ lý AI nổi (chat), Markdown, hộp thoại Cài đặt AI, bảng tạo slogan
+  home/              trang chủ
+  learning/          trang Học tập (tự học, phát âm, Daily School English, tiến trình)
   slogan/            thẻ slogan, nghe/sao chép/yêu thích, tốc độ đọc, luyện nói, poster, trình chiếu, slogan của ngày
   ui/                modal, lớp nút dùng chung
 lib/
   ai/                client duy nhất, hàm fallback duy nhất (thường + streaming), chat, model, lỗi, cấu hình, TTS
   slogans.ts         dữ liệu slogan
   classroom-english.ts  ngân hàng câu lệnh lớp học
+  learning-content.ts, learning-phrases-extra.ts  mẫu câu tự học theo 10 môn
+  daily-school-english.ts  Daily School English (10 nhóm tình huống)
   speech-recognition.ts, pronunciation.ts  nhận dạng giọng nói & chấm điểm phát âm
   poster.ts          vẽ poster canvas
   visit-counter.ts   bộ đếm lượt truy cập (counterapi.dev)

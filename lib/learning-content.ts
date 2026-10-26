@@ -1,5 +1,6 @@
 import { getDailyIndex } from '@/lib/daily';
-import { classroomCategories } from '@/lib/classroom-english';
+import { DAILY_SCHOOL_GROUPS } from '@/lib/daily-school-english';
+import { EXTRA_LEARNING_PHRASES } from '@/lib/learning-phrases-extra';
 import type { Slogan } from '@/lib/slogans';
 
 export interface LearningPhrase extends Slogan {
@@ -257,7 +258,7 @@ const ADDITIONAL_LEARNING_PHRASES: Array<[string, string, string, string, string
   ["science-care","Nuôi dưỡng tinh thần khám phá","Scientists ask questions and look for answers.","/ˈsaɪəntɪsts æsk ˈkwɛstʃənz ənd lʊk fɔːr ˈænsərz/","Các nhà khoa học đặt câu hỏi và tìm câu trả lời."],
 ];
 
-SELF_STUDY_PHRASES.push(...ADDITIONAL_LEARNING_PHRASES.map(([id, context, en, ipa, vi]) => {
+SELF_STUDY_PHRASES.push(...[...ADDITIONAL_LEARNING_PHRASES, ...EXTRA_LEARNING_PHRASES].map(([id, context, en, ipa, vi]) => {
   const subjectId = SUBJECT_IDS_BY_PREFIX[id.split('-', 1)[0]];
   if (!subjectId) throw new Error('Unknown learning subject for phrase: ' + id);
   return { id, subjectId, subject: SUBJECT_LABELS[subjectId], context, en, ipa, vi };
@@ -271,20 +272,14 @@ export interface DailySchoolSet {
   phrases: LearningPhrase[];
 }
 
+/** Bộ Daily School English của ngày: một nhóm tình huống, ba mẫu câu xoay vòng theo ngày. */
 export const getDailySchoolSet = (date = new Date()): DailySchoolSet => {
-  const category = classroomCategories[getDailyIndex(date, classroomCategories.length)];
-  const start = getDailyIndex(date, category.slogans.length);
-  const phrases = Array.from({ length: Math.min(3, category.slogans.length) }, (_, index) => {
-    const slogan = category.slogans[(start + index) % category.slogans.length];
-    return { ...slogan, id: 'daily-' + category.id + '-' + ((start + index) % category.slogans.length), subjectId: category.id, subject: category.name, context: category.description };
+  const group = DAILY_SCHOOL_GROUPS[getDailyIndex(date, DAILY_SCHOOL_GROUPS.length)];
+  const start = getDailyIndex(date, group.phrases.length);
+  const phrases = Array.from({ length: Math.min(3, group.phrases.length) }, (_, index) => {
+    const phraseIndex = (start + index) % group.phrases.length;
+    const { situation, ...phrase } = group.phrases[phraseIndex];
+    return { ...phrase, id: 'daily-' + group.id + '-' + phraseIndex, subjectId: group.id, subject: group.name, context: situation };
   });
-  return { id: category.id, title: category.name, icon: category.icon, description: category.description, phrases };
+  return { id: group.id, title: group.title + ' · ' + group.name, icon: group.icon, description: group.description, phrases };
 };
-
-export const DAILY_SCHOOL_TOPICS = classroomCategories.map((category) => ({
-  id: category.id,
-  name: category.name,
-  icon: category.icon,
-  description: category.description,
-  count: category.slogans.length,
-}));
