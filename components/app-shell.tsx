@@ -18,6 +18,7 @@ import {
   Mic,
   Settings2,
   Sparkles,
+  UserRound,
   X,
   type LucideIcon,
 } from 'lucide-react';
@@ -136,6 +137,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {MENU_GROUPS.map((group) => (
                   <NavDropdown key={group.id} group={group} active={isGroupActive(group, pathname)} />
                 ))}
+                <li>
+                  <Link
+                    href="/tac-gia"
+                    aria-current={pathname === '/tac-gia' ? 'page' : undefined}
+                    className={cn(navItemClass, pathname === '/tac-gia' ? navActiveClass : navIdleClass)}
+                  >
+                    <UserRound className="h-4 w-4" aria-hidden="true" /> Tác giả
+                  </Link>
+                </li>
               </ul>
             </nav>
 
@@ -199,6 +209,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   </ul>
                 </div>
               ))}
+              <Link
+                href="/tac-gia"
+                onClick={closeMobile}
+                aria-current={pathname === '/tac-gia' ? 'page' : undefined}
+                className={cn(navItemClass, 'mt-3 w-full', pathname === '/tac-gia' ? navActiveClass : navIdleClass)}
+              >
+                <UserRound className="h-4 w-4" aria-hidden="true" /> Tác giả
+              </Link>
               <div className="mt-3 flex items-center justify-between rounded-xl bg-muted/60 px-3 py-2 sm:hidden">
                 <span className="inline-flex items-center gap-2 text-sm font-bold text-orange-600 dark:text-orange-300">
                   <Flame className="h-4 w-4" aria-hidden="true" /> {progress.currentStreak} ngày · {progress.xp} XP
