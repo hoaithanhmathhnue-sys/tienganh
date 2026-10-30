@@ -6,6 +6,7 @@ export const AUTHOR = {
   phone: '0935414898',
   school: 'Trường Tiểu học Bế Văn Đàn',
   address: 'phường An Khê, TP Đà Nẵng',
+  avatar: '/avatar.jpg',
 } as const;
 
 export const AUTHOR_ZALO_URL = `https://zalo.me/${AUTHOR.phone}`;
