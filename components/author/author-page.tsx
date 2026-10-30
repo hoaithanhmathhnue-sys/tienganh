@@ -1,4 +1,5 @@
-import { Building2, Mail, MessageCircle, Phone, UserRound, type LucideIcon } from 'lucide-react';
+import Image from 'next/image';
+import { Building2, Mail, MessageCircle, Phone, type LucideIcon } from 'lucide-react';
 import { SiteFooter } from '@/components/site-footer';
 import { AUTHOR, AUTHOR_ZALO_URL, formatPhone } from '@/lib/author';
 
@@ -16,8 +17,8 @@ export function AuthorPage() {
       <main className="mx-auto max-w-[1200px] px-4 py-10 sm:py-14">
         <section className="mx-auto max-w-2xl overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
           <div className="flex flex-col items-center gap-4 bg-[#004D40] px-6 py-8 text-center text-white sm:flex-row sm:text-left">
-            <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-white/15 ring-4 ring-white/20">
-              <UserRound className="h-10 w-10" aria-hidden="true" />
+            <span className="relative h-28 w-28 shrink-0 overflow-hidden rounded-full bg-white/15 ring-4 ring-white/30 sm:h-32 sm:w-32">
+              <Image src={AUTHOR.avatar} alt={`Ảnh ${AUTHOR.role.toLowerCase()} ${AUTHOR.name}`} fill sizes="128px" priority className="object-cover" />
             </span>
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-teal-200">Tác giả</p>
